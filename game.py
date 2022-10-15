@@ -18,7 +18,7 @@ class DinoJump(Game):
     window_height = conf.WINDOW_HEIGHT
     window_caption = "Dino Jump"
     screen_color = (130, 130, 130)
-    record_last_n_frames = 60 * 60 * 5
+    record_last_n_frames = 60 * 2  # * 60 * 5
     recording_dir = Path(__file__).parent / "recordings"
 
     def __init__(self):
@@ -70,8 +70,8 @@ class DinoJump(Game):
                 "-i",
                 str(self.recording_dir / "%d.png"),
                 "-r",
-                "30",
-                str(self.recording_dir / "out.gif"),
+                "60",
+                str(self.recording_dir / "out.mp4"),
             ]
         )
         subprocess.run(
@@ -81,9 +81,16 @@ class DinoJump(Game):
                 "60",
                 "-i",
                 str(self.recording_dir / "%d.png"),
-                "-r",
-                "60",
-                str(self.recording_dir / "out.mp4"),
+                "-filter_complex",
+                # credit: https://superuser.com/questions/1049606/reduce-generated-gif-size-using-ffmpeg
+                (
+                    "fps=30,"
+                    "scale=1080:-1:flags=lanczos,"
+                    "split[s0][s1];[s0]"
+                    "palettegen=max_colors=32[p];[s1][p]"
+                    "paletteuse=dither=bayer"
+                ),
+                str(self.recording_dir / "out.gif"),
             ]
         )
 
