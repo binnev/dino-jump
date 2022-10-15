@@ -31,13 +31,11 @@ Just don't put a space in the name; that'll start a new game. It's a bug. I'm wo
 all this from scratch including the text input field. 
 
 
-## Installation
+## Install and play
 Dino Jump requires python >= 3.10 and pip, so make sure you have those installed. See [the Python downloads page](https://www.python.org/downloads/) for help on that.
-```
-pip install -r requirements.txt
-```
 
-Then, navigate to the project directory and run 
-```
-python game.py
-```
+### make
+If you have `make` installed, simply navigate to the project directory and run `make install`. Start the game with `make play`
+
+### manually
+Alternatively, you can install the requirements with `pip install -r requirements.txt`, and run the game with `python3 game.py`
