@@ -27,3 +27,15 @@ highscores.
 
 Just don't put a space in the name; that'll start a new game. It's a bug. I'm working on it. Give me a break, I built
 all this from scratch including the text input field. 
+
+
+## Installation
+Dino Jump requires python >= 3.10 and pip, so make sure you have those installed. See [the Python downloads page](https://www.python.org/downloads/) for help on that.
+```
+pip install -r requirements.txt
+```
+
+Then, navigate to the project directory and run 
+```
+python game.py
+```
