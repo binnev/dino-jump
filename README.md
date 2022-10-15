@@ -1,8 +1,10 @@
 # Dino Jump
 
+The long-awaited sequel to the [Chrome dinosaur game](chrome://dino/). Built entirely in [pygame](https://pypi.org/project/pygame/) and [robingame](https://pypi.org/project/robingame/).
+
 ## This time Dino came strapped.
 
-Press `G` to shoot the gun and give those cacti a fatal dose of lead. Watch out though, shooting cacti lowers your
+Press `G` to shoot the gun and give those cacti a fatal dose of lead. Watch out though: shooting cacti lowers your
 score.
 
 ![Shooting angles](readme_media/shooting.gif)
