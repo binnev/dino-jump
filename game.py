@@ -18,7 +18,7 @@ class DinoJump(Game):
     window_height = conf.WINDOW_HEIGHT
     window_caption = "Dino Jump"
     screen_color = (130, 130, 130)
-    record_last_n_frames = 60 * 2  # * 60 * 5
+    record_last_n_frames = 60 * 60 * 2
     recording_dir = Path(__file__).parent / "recordings"
 
     def __init__(self):
