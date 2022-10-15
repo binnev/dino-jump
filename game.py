@@ -2,14 +2,13 @@ import glob
 import os
 import subprocess
 import sys
-import time
 from collections import deque
 from pathlib import Path
 
 import pygame
 from pygame.surface import Surface
-
 from robingame.objects import Game
+
 import conf
 from scenes import DinoJumpManager
 
@@ -19,7 +18,8 @@ class DinoJump(Game):
     window_height = conf.WINDOW_HEIGHT
     window_caption = "Dino Jump"
     screen_color = (130, 130, 130)
-    record_last_n_frames = 60  # * 60 * 5
+    record_last_n_frames = 60 * 60 * 5
+    recording_dir = Path(__file__).parent / "recordings"
 
     def __init__(self):
         super().__init__()
@@ -36,61 +36,56 @@ class DinoJump(Game):
             self.screenshots.append(screenshot)
 
     def main(self):
-        """This is the outermost game function which runs once. It contains the outermost game
-        loop. Here's where you should put your main event state machine."""
-        self.running = True
-
         try:
-            while self.running:
-                self._update()
-                self._draw(self.window, debug=self.debug)
+            super().main()
         except SystemExit:
             if self.record_last_n_frames:
-                # make sure recordings dir exists
-                folder = Path(__file__).parent / "recordings"
-                try:
-                    os.mkdir(folder.as_posix())
-                except FileExistsError:
-                    pass
-
-                # clear old files
-                files = glob.glob((folder / "*.*").as_posix())
-                for file in files:
-                    os.remove(file)
-
-                # export in-memory screenshots
-                for ii, image in enumerate(self.screenshots):
-                    filename = Path(__file__).parent / f"recordings/{ii}.png"
-                    pygame.image.save(image, filename.as_posix())
-
-                # stitch them together
-                subprocess.run(
-                    [
-                        "ffmpeg",
-                        "-r",
-                        "60",
-                        "-i",
-                        str(folder / "%d.png"),
-                        "-r",
-                        "30",
-                        str(folder / "out.gif"),
-                    ]
-                )
-                subprocess.run(
-                    [
-                        "ffmpeg",
-                        "-r",
-                        "60",
-                        "-i",
-                        str(folder / "%d.png"),
-                        "-r",
-                        "60",
-                        str(folder / "out.mp4"),
-                    ]
-                )
-
+                self.clean_empty_recordings_dir()
+                self.save_screenshots()
+                self.create_videos()
         pygame.quit()
         sys.exit()
+
+    def clean_empty_recordings_dir(self):
+        try:
+            os.mkdir(self.recording_dir.as_posix())
+        except FileExistsError:
+            pass
+
+        # clear old files
+        files = glob.glob((self.recording_dir / "*").as_posix())
+        for file in files:
+            os.remove(file)
+
+    def save_screenshots(self):
+        for ii, image in enumerate(self.screenshots):
+            pygame.image.save(image, str(self.recording_dir / f"{ii}.png"))
+
+    def create_videos(self):
+        subprocess.run(
+            [
+                "ffmpeg",
+                "-r",
+                "60",
+                "-i",
+                str(self.recording_dir / "%d.png"),
+                "-r",
+                "30",
+                str(self.recording_dir / "out.gif"),
+            ]
+        )
+        subprocess.run(
+            [
+                "ffmpeg",
+                "-r",
+                "60",
+                "-i",
+                str(self.recording_dir / "%d.png"),
+                "-r",
+                "60",
+                str(self.recording_dir / "out.mp4"),
+            ]
+        )
 
 
 if __name__ == "__main__":
