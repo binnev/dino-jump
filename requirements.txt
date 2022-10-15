@@ -1,0 +1,6 @@
+black
+
+pygame==2.1.2
+robingame==0.0.4
+dataclasses-json==0.5.7
+numpy==1.22.3
