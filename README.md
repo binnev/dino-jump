@@ -39,3 +39,6 @@ If you have `make` installed, simply navigate to the project directory and run `
 
 ### manually
 Alternatively, you can install the requirements with `pip install -r requirements.txt`, and run the game with `python3 game.py`
+
+### MacOS
+If you are reading this on MacOS: firstly, _my condolences_. Secondly, you may need to install SDL and some other dependencies. Please see [this guide](https://www.pygame.org/wiki/MacCompile).
